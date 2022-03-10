@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>FETCH EXAMPLE</title>
+	    <script>
+			const output = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { output().innerHTML += `<div>${m}</div>` };
+
+			async function sendCommand(c) {
+				let response = await fetch(c);
+				if (response.ok) {
+					let body = await response.text();
+					print(body);
+				} else {
+					print(`Request Failed: ${response.status}`);
+				}
+			}
+	    </script>
+	</head>
+
+	<body>
+		<h1>FETCH EXAMPLE</h1>
+
+		<h2>Known Asynchronous Actions</h2>
+		<div>
+<%	commands.each do |c, v| %>
+			<span>
+				<button type="button" onclick="sendCommand('<%= c %>');"><%= c %></button>
+			</span>
+<%	end %>
+			<span>
+				<button type="button" onclick="sendCommand('D');">D</button>
+			</span>
+		</div>
+
+	    <h2>Server Output</h2>
+	    <div id='event_log'></div>
+	</body>
+</html>
