@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>FETCH EXAMPLE</title>
+	    <script>
+			const output = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { output().innerHTML += `<div>${m}</div>` };
+
+			async function sendCommand(c) {
+				fetch(c)
+					.then(response => {
+						if (response.status != 200) {
+							throw new Error(response.status)
+						}
+						return response.text()
+					})
+					.then(text => print(text))
+					.catch(e => print(`Request Failed: ${e}`));
+			}
+	    </script>
+	</head>
+
+	<body>
+		<h1>FETCH EXAMPLE</h1>
+
+		<h2>Known Asynchronous Actions</h2>
+		<div>
+<%	commands.each do |c, v| %>
+			<span>
+				<button type="button" onclick="sendCommand('<%= c %>');"><%= c %></button>
+			</span>
+<%	end %>
+			<span>
+				<button type="button" onclick="sendCommand('D');">D</button>
+			</span>
+		</div>
+
+	    <h2>Server Output</h2>
+	    <div id='event_log'></div>
+	</body>
+</html>
