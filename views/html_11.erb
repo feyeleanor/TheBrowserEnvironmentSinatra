@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>TIMER EXAMPLE</title>
+		<script>
+			const output = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { output().innerHTML += `<div>${m}</div>` };
+
+			window.onload = () => {
+				let i = window.setInterval(() => {
+					print(`setInterval ${i} triggered`);
+				}, 500);
+				let j = window.setTimeout(() => {
+					print(`setTimeout ${j} triggered`);
+					let k = window.setTimeout(() => {
+						window.clearInterval(i);
+						print(`setInterval ${k} cancelled`);
+					}, 2000);
+				}, 3000);
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>TIMER EXAMPLE</h1>
+
+		<h2>Timer Events</h2>
+		<div id='event_log'></div>
+  </body>
+</html>
