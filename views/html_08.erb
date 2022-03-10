@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>DOM EXAMPLE</title>
+		<script>
+			const output = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { output().innerHTML += `<div>${m}</div>` };
+
+			const hide = e => { output(e).innerHTML = "X" };
+			const show = (...n) => n.forEach(e => {
+				output(e).innerHTML = e;
+			});
+
+			function toggle(name) {
+				print(name);
+				hide(name);
+				switch(name) {
+<%	commands.each do |c, v| %>
+				case '<%= c %>':
+					show(<%= v.map {|x| "'#{x}'" }.join(',') %>);
+					break;
+<%	end %>
+				};
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>DOM EXAMPLE</h1>
+
+		<h2>Known Actions</h2>
+		<div>
+<%	commands.each do |c, v| %>
+			<button id='<%= c %>' type="button" onclick="toggle('<%= c %>');"><%= c %></button>
+<%	end %>
+		</div>
+
+		<h2>Server Output</h2>
+		<div id='event_log'></div>
+	</body>
+</html>
