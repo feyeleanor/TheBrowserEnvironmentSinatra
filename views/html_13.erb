@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>TIMER EXAMPLE</title>
+		<script>
+			const output = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { output().innerHTML += `<div>${m}</div>` };
+			const addButton = (n, c) => { output("action_buttons").appendChild(newButton(n, c)) };
+
+			const doAfter = (i, f) => { return window.setTimeout(f, i) };
+			const doEvery = (i, f) => { return window.setInterval(f, i) };
+
+			function newButton(n, c) {
+				let b = document.createElement("BUTTON");
+				b.innerHTML = n;
+				b.onclick = c(b);
+				return b;
+			}
+
+			const cancelButton = (b, n, i, f) => {
+				print(`timer ${i} cancelled`);
+				b.innerHTML = n;
+				b.onclick = f;
+			}
+
+			window.onload = () => {
+				var f;
+<%	count = commands.length
+	commands.each do |c, i|
+		case c 
+		when "interval" %>
+<%			count -= 1	%>
+				let f_<%= count %> = b => {
+					return () => {
+						var count = 1;
+						let i = doEvery(<%= i %>, () => {
+							print(`doEvery ${i} triggered ${count}`);
+							count++;
+						});
+						print(`doEvery ${i} cued`);
+						b.innerHTML = `cancel ${i}`;
+						b.onclick = () => {
+							window.clearInterval(i);
+							cancelButton(b, '<%= c %>', i, f_<%= count %>(b));
+						};
+					};
+				};
+				addButton('<%= c %>', f_<%= count %>);
+
+<%		when "timeout"	%>
+<%			count -= 1	%>
+				let f_<%= count %> = b => {
+					return () => {
+						let i = doAfter(<%= i %>, () => {
+							print(`doAfter ${i} completed`);
+							b.innerHTML = '<%= c %>'
+							b.onclick = f_<%= count %>(b);
+						});
+						print(`doAfter ${i} cued`);
+						b.innerHTML = `cancel ${i}`;
+						b.onclick = () => {
+							window.clearTimeout(i);
+							cancelButton(b, '<%= c %>', i, f_<%= count %>(b));
+						};
+					};
+				};
+				addButton('<%= c %>', f_<%= count %>);
+
+<%		end
+	end %>
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>TIMER EXAMPLE</h1>
+
+		<h2>Known Actions</h2>
+		<div id="action_buttons"></div>
+
+		<h2>Timer Events</h2>
+		<div id='event_log'></div>
+  </body>
+</html>
