@@ -11,7 +11,7 @@ get '/' do
 end
 
 get '/:command' do
-	if settings.commands.include?(params[:command])
+	if settings.commands.include? params[:command]
 		params[:command]
 	else
 		halt 404
