@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>TBE:Ruby WebSocket</title>
+		<script>
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
+			const addButton = (n, c) => { element("action_buttons").appendChild(newButton(n, c)) };
+
+			function newButton(n, c) {
+				let b = document.createElement("BUTTON");
+				b.onclick = c;
+				b.appendChild(document.createTextNode(n));
+				return b;
+			}
+
+			window.onload = () => {
+				var socket = new WebSocket(`ws://${location.host}<%= url %>`);
+				socket.onopen = (e) => print("opening socket: <%= url %>");
+				socket.onclose = (e) => print("closing socket: <%= url %>");
+				socket.onerror = (e) => print(e.message);
+				socket.onmessage = (m) => { print(m.data) };
+
+<%	commands.each do |c| %>
+				addButton('<%= c %>', () => socket.send('<%= c %>'));
+<%	end %>
+				addButton('D', () => socket.send('D'));
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>TBE:Ruby WebSocket</h1>
+
+		<h2>Actions</h2>
+		<div id="action_buttons"></div>
+
+		<h2>Server Output</h2>
+		<div id='event_log'></div>
+	</body>
+</html>
