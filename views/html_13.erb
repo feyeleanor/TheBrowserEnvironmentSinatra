@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>TIMER EXAMPLE</title>
+		<title>TBE:Ruby Timer</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
-			const addButton = (n, c) => { output("action_buttons").appendChild(newButton(n, c)) };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
+			const addButton = (n, c) => { element("action_buttons").appendChild(newButton(n, c)) };
 
 			const doAfter = (i, f) => { return window.setTimeout(f, i) };
 			const doEvery = (i, f) => { return window.setInterval(f, i) };
@@ -73,9 +73,9 @@
 	</head>
 
 	<body>
-		<h1>TIMER EXAMPLE</h1>
+		<h1>TBE:Ruby Timer</h1>
 
-		<h2>Known Actions</h2>
+		<h2>Actions</h2>
 		<div id="action_buttons"></div>
 
 		<h2>Timer Events</h2>

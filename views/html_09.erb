@@ -2,12 +2,16 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>DOM EXAMPLE</title>
+		<title>TBE:Ruby DOM</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const hide = e => { e.innerHTML = "X" };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const hide = e => {
+				e.innerHTML = "X";
+				e.disabled = true;
+			};
 			const show = (...n) => n.forEach(e => {
 				e.innerHTML = e.id;
+				e.disabled = false;
 			});
 
 			var buttons = [];
@@ -37,16 +41,16 @@
 			window.onload = () => {
 				['A', 'B', 'C'].forEach(n => {
 					buttons.unshift(newButton(n));
-					output("action_buttons").appendChild(buttons[0]);
+					element("action_buttons").appendChild(buttons[0]);
 				});
 			};
 		</script>
 	</head>
 
 	<body>
-		<h1>DOM EXAMPLE</h1>
+		<h1>TBE:Ruby DOM</h1>
 
-		<h2>Known Actions</h2>
+		<h2>Actions</h2>
 		<div id="action_buttons"></div>
 	</body>
 </html>

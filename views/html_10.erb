@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>DOM FETCH EXAMPLE</title>
+		<title>TBE:Ruby DOM Fetch</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
 
 			async function sendCommand(c) {
 				fetch(c)
@@ -28,7 +28,7 @@
 
 			window.onload = () => {
 <%	commands.each do |c, v| %>
-				output("action_buttons").
+				element("action_buttons").
 					appendChild(
 						newButton('<%= c %>', () => sendCommand('<%= c %>')));
 <%	end %>
@@ -37,9 +37,9 @@
 	</head>
 
 	<body>
-		<h1>DOM EXAMPLE</h1>
+		<h1>TBE:Ruby DOM Fetch</h1>
 
-		<h2>Known Actions</h2>
+		<h2>Actions</h2>
 		<div id="action_buttons"></div>
 
 		<h2>Server Output</h2>

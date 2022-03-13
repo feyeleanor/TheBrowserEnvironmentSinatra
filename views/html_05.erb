@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>AJAX EXAMPLE</title>
+		<title>TBE:Ruby AJAX</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
 
 			function sendCommand(c) {
 				var xhttp = new XMLHttpRequest();
@@ -21,9 +21,9 @@
 	</head>
 
 	<body>
-		<h1>AJAX EXAMPLE</h1>
+		<h1>TBE:Ruby AJAX</h1>
 
-	    <h2>Known Asynchronous Actions</h2>
+	    <h2>Actions</h2>
 	    <div>
 <%	commands.each do |c, v| %>
 			<span>

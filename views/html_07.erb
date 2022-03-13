@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>FETCH EXAMPLE</title>
+		<title>TBE:Ruby Fetch</title>
 	    <script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
 
 			async function sendCommand(c) {
 				fetch(c)
@@ -22,9 +22,9 @@
 	</head>
 
 	<body>
-		<h1>FETCH EXAMPLE</h1>
+		<h1>TBE:Ruby Fetch</h1>
 
-		<h2>Known Asynchronous Actions</h2>
+		<h2>Actions</h2>
 		<div>
 <%	commands.each do |c, v| %>
 			<span>

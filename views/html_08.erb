@@ -2,14 +2,20 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>DOM EXAMPLE</title>
+		<title>TBE:Ruby DOM</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
 
-			const hide = e => { output(e).innerHTML = "X" };
+			const hide = e => {
+				let el = element(e);
+				el.disabled = true;
+				el.innerHTML = "X";
+			};
 			const show = (...n) => n.forEach(e => {
-				output(e).innerHTML = e;
+				let el = element(e);
+				el.disabled = false;
+				el.innerHTML = e;
 			});
 
 			function toggle(name) {
@@ -27,9 +33,9 @@
 	</head>
 
 	<body>
-		<h1>DOM EXAMPLE</h1>
+		<h1>TBE:Ruby DOM</h1>
 
-		<h2>Known Actions</h2>
+		<h2>Actions</h2>
 		<div>
 <%	commands.each do |c, v| %>
 			<button id='<%= c %>' type="button" onclick="toggle('<%= c %>');"><%= c %></button>
