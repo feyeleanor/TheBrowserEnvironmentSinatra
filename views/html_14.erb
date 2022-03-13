@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<meta charset='UTF-8' />
-		<title>TIMER FETCH EXAMPLE</title>
+		<title>TBE:Ruby Timer Fetch</title>
 		<script>
-			const output = (e = "event_log") => { return document.getElementById(e) };
-			const print = m => { output().innerHTML += `<div>${m}</div>` };
-			const addButton = (n, c) => { output("action_buttons").appendChild(newButton(n, c)) };
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
+			const addButton = (n, c) => { element("action_buttons").appendChild(newButton(n, c)) };
 
 			const doEvery = (i, f) => { return window.setInterval(f, i) };
 
@@ -19,17 +19,21 @@
 
 			var timers = {}
 
+			const clearTimer = t => {
+				window.clearInterval(timers[t]);
+				print(`no longer polling ${t}`);
+				timers[t] = null;
+			}
+
 			function doCommand(c, i) {
 				if (timers[c]) {
-					print(`no longer polling ${timers[c]}`);
-					window.clearInterval(timers[c]);
-					timers[c] = null;
+					clearTimer(c);
 				} else {
 					print(`poll ${c}`);
 					timers[c] = doEvery(i, () => {
 						fetch(c)
 							.then(response => response.text())
-							.then(text => print(`polling ${timers[c]}: ${text}`))
+							.then(text => print(`polling ${c}: ${text}`))
 							.catch(e => print(`Request Failed: ${e}`));          
 					});
 				}
@@ -39,14 +43,18 @@
 <%	commands.each do |c, v| %>
 				addButton('<%= c %>', () => doCommand('<%= c %>', '<%= v %>'));
 <%	end %>
+				addButton("cancel", () => {
+					for (const t in timers) {
+						clearTimer(t);
+					}});
 			}
 		</script>
 	</head>
 
 	<body>
-		<h1>TIMER FETCH EXAMPLE</h1>
+		<h1>TBE:Ruby Timer Fetch</h1>
 
-		<h2>Known Asynchronous Actions</h2>
+		<h2>Actions</h2>
 		<div id="action_buttons"></div>
 
 		<h2>Server Output</h2>
