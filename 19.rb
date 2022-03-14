@@ -34,15 +34,11 @@ get '/' do
 				when :HEARTBEAT
 					settings.heartbeat = m["message"].to_i
 					EM.next_tick do
-						settings.sockets.each do |s|
-							s.send m.to_json
-						end
+						settings.sockets.each { |s| s.send m.to_json }
 					end
 				when :PRINT
 					EM.next_tick do
-						settings.sockets.each do |s|
-							s.send m.to_json if s != ws
-						end
+						settings.sockets.each { |s| s.send m.to_json if s != ws }
 					end
 				else
 					ws.send message(0, :ERROR, m["message"], m["action"]).to_json
