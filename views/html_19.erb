@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>WebSocket EXAMPLE</title>
+		<script>
+			const element = (e = "event_log") => { return document.getElementById(e) };
+			const print = m => { element().innerHTML += `<div>${m}</div>` };
+			const addButton = (n, c) => { element("action_buttons").appendChild(newButton(n, c)) };
+			const sendMessage = (s, a, m) => {
+				s.send(JSON.stringify({ id: null, action: a, message: m }))
+			};
+
+			function newButton(n, c) {
+				let b = document.createElement("BUTTON");
+				b.onclick = c;
+				b.appendChild(document.createTextNode(n));
+				return b;
+			}
+
+			window.onload = () => {
+				var heartbeat = 0;
+				var socket = new WebSocket(`ws://${location.host}<%= url %>`);
+				socket.onopen = (e) => print("opening socket: <%= url %>");
+				socket.onclose = (e) => print("closing socket: <%= url %>");
+				socket.onerror = (e) => print(e.message);
+				socket.onmessage = (m) => {
+					let d = JSON.parse(m.data);
+					switch (d.action.toUpperCase()) {
+					case 'HEARTBEAT':
+						heartbeat = d.message;
+						element("counter").innerHTML = heartbeat;
+						print(`${d.id}: ${d.action} ${heartbeat}`);
+						break;
+					case 'PRINT':
+						print(`${d.id}: ${d.message}`);
+						break;
+					}
+				};
+
+				[0, 10, 100].forEach(i => {
+					addButton(`HEARTBEAT ${i}`, () => sendMessage(socket, 'HEARTBEAT', i));
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>WebSocket EXAMPLE</h1>
+
+		<h2>Actions</h2>
+		<div id="heartbeat">
+			HEARTBEAT: <span id="counter">0</span>
+		</div>
+		<div id="action_buttons"></div>
+
+		<h2>Server Output</h2>
+		<div id='event_log'></div>
+	</body>
+</html>
